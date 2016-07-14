@@ -1,8 +1,8 @@
 PROJECT := $(shell readlink $(dir $(lastword $(MAKEFILE_LIST))) -f)
 
-CXX = g++
+CXX = mpicxx
 CXXFLAGS = -O3 \
-           -std=c++11 \
+           -std=c++14 \
            -Wall \
            -Wno-sign-compare \
            -fno-omit-frame-pointer
@@ -10,12 +10,11 @@ CXXFLAGS = -O3 \
 MULTIVERSO_DIR = $(PROJECT)/multiverso
 MULTIVERSO_INC = $(MULTIVERSO_DIR)/include
 MULTIVERSO_LIB = $(MULTIVERSO_DIR)/lib
-THIRD_PARTY_LIB = $(MULTIVERSO_DIR)/third_party/lib
 
 INC_FLAGS = -I$(MULTIVERSO_INC) -I$(PROJECT)/src -I$(PROJECT)/inference
 LD_FLAGS  = -L$(MULTIVERSO_LIB) -lmultiverso
-LD_FLAGS += -L$(THIRD_PARTY_LIB) -lzmq -lmpich -lmpl -lpthread
-  	  	
+LD_FLAGS += -Wl,-rpath=${ZMQ_ROOT}/lib -L$(ZMQ_ROOT)/lib -lzmq -lpthread
+
 BASE_SRC = $(shell find $(PROJECT)/src -type f -name "*.cpp" -type f ! -name "lightlda.cpp")
 BASE_OBJ = $(BASE_SRC:.cpp=.o)
 
@@ -62,7 +61,7 @@ $(DUMP_BINARY): $(DUMP_BINARY_SRC)
 lightlda: path $(LIGHTLDA)
 
 infer: path $(INFER)
-	
+
 dump_binary: path $(DUMP_BINARY)
 
 clean:
