@@ -51,7 +51,9 @@ if doc != "":
 
 libsvm_file.close()
 
-for word in word_dict:
-    line = '\t'.join([str(word), vocab_dict[word], str(word_dict[word])]) + '\n'
-    dict_file.write(line)
+for word, freq in word_dict.items():
+    try:
+        line = '\t'.join([str(word), vocab_dict[word], str(freq)]) + '\n'
+        dict_file.write(line)
+    except: pass
 

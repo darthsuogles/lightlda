@@ -12,8 +12,8 @@ MULTIVERSO_INC = $(MULTIVERSO_DIR)/include
 MULTIVERSO_LIB = $(MULTIVERSO_DIR)/lib
 
 INC_FLAGS = -I$(MULTIVERSO_INC) -I$(PROJECT)/src -I$(PROJECT)/inference
-LD_FLAGS  = -L$(MULTIVERSO_LIB) -lmultiverso
-LD_FLAGS += -Wl,-rpath=${ZMQ_ROOT}/lib -L$(ZMQ_ROOT)/lib -lzmq -lpthread
+LD_FLAGS  = -Wl,-rpath=$(MULTIVERSO_LIB) -L$(MULTIVERSO_LIB) -lmultiverso
+LD_FLAGS += -Wl,-rpath=$(ZMQ_ROOT)/lib -L$(ZMQ_ROOT)/lib -lzmq -lpthread
 
 BASE_SRC = $(shell find $(PROJECT)/src -type f -name "*.cpp" -type f ! -name "lightlda.cpp")
 BASE_OBJ = $(BASE_SRC:.cpp=.o)
